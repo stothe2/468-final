@@ -1,0 +1,27 @@
+We are not aware of any copyright restrictions of the material we are publishing. Please read COPYING for more info.
+If you use these datasets and tools in your research, please cite the following work:
+
+@inproceedings{wangling:acl2013,
+author = {Ling, Wang and Xiang, Guang and Dyer, Chris and Black, Alan and Trancoso, Isabel},
+title = {Microblogs as Parallel Corpora},
+booktitle = {Proceedings of the 51st Annual Meeting on Association for Computational Linguistics},
+series = {ACL '13},
+year = {2013},
+location = {Sofia, Bulgaria},
+numpages = {8},
+publisher = {Association for Computational Linguistics}
+}
+
+Also, please keep in mind that after crawling the data from Twitter and Sina Weibo, you are subject to their terms and conditions. 
+Twitter's terms can be found in https://dev.twitter.com/terms/api-terms
+Sina Weibo' terms can be found in http://open.weibo.com/wiki/index.php/%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E8%80%85%E5%8D%8F%E8%AE%AE and in http://www.weibo.com/signup/v5/protocol
+We do not endorse and shall not be held responsible or liable for damages resulting from the impropriate usage of any content downloaded in this site.
+
+======= Instructions =======
+The dataset is structured as follows:
+README - this file
+COPYING - Copyright for this dataset
+annotations.json - alignment information with the following: (1) is there parallel data (2) what language pair is the parallel data if any (3) which are the spans of the parallel data
+bitext/<lang-pair> - folder with parallel data extracted from the annotations 
+
+Keep in mind that this gold standard is created by annotating tweets from Sina Weibo. So, if you are using this as gold standard to evaluate your translation system and the our parallel dataset to train (http://www.cs.cmu.edu/~lingwang/microtopia/data/weibo/corpora_compressed/utopia.cn-en.tar.gz), make sure you clean for near duplicates in the training data.
