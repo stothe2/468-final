@@ -94,7 +94,3 @@ function buildvocab(data)
   end
   return mostFreqWords
 end
-
---local en, ja, ref = collectdata()
-en, ja = collectdata("opensub")
-print(buildvocab(en))

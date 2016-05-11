@@ -15,12 +15,16 @@ Reversal of sequence for backward states happens on the time dimension.
 For each step, the outputs of both rnn are merged together using the merge
 module (defaults to nn.CAddTable() which sums the activations).
 --]]
+local nn = require 'nn'
+local rnn = require 'rnn'
+
 local BiRNN, parent = torch.class('BiRNN', 'nn.Container')
 
 function BiRNN:__init(inputSize, hiddenSize, seqLen, wordEmbeddingSize)
   parent.__init(self)
 
   self.wordEmbeddingSize = wordEmbeddingSize
+
   self.output = torch.Tensor()
   self.gradInput = torch.Tensor()
 
