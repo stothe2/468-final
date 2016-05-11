@@ -1,0 +1,2 @@
+OpenSubtitles2016.en-ja.en filter=lfs diff=lfs merge=lfs -text
+OpenSubtitles2016.en-ja.ja filter=lfs diff=lfs merge=lfs -text
