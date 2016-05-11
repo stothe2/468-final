@@ -1234,7 +1234,7 @@ class Decoder(EncoderDecoderBase):
 
     def build_sampler(self, n_samples, n_steps, T, c):
         states = [TT.zeros(shape=(n_samples,), dtype='int64'),
-                TT.zeros(shape=(n_samples,), dtype='float64')]
+                TT.zeros(shape=(n_samples,), dtype='float32')]
         init_c = c[0, -self.state['dim']:]
         states += [ReplicateLayer(n_samples)(init(init_c).out).out for init in self.initializers]
 
