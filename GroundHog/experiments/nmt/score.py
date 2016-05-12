@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import argparse
 import cPickle
 import traceback
@@ -58,9 +57,9 @@ class BatchBiTxtIterator(object):
     def __init__(self, state, src, indx_src, trg, indx_trg, batch_size, raise_unk):
         self.__dict__.update(locals())
         self.__dict__.pop('self')
-        self.src_iter = BatchTxtIterator(state, src, indx_src, batch_size, raise_unk, 
+        self.src_iter = BatchTxtIterator(state, src, indx_src, batch_size, raise_unk,
                                          unk_sym=state['unk_sym_source'], null_sym=state['null_sym_source'])
-        self.trg_iter = BatchTxtIterator(state, trg, indx_trg, batch_size, raise_unk, 
+        self.trg_iter = BatchTxtIterator(state, trg, indx_trg, batch_size, raise_unk,
                                          unk_sym=state['unk_sym_target'], null_sym=state['null_sym_target'])
 
     def start(self):
@@ -84,7 +83,7 @@ def parse_args():
     parser.add_argument("--src", help="Source phrases")
     parser.add_argument("--trg", help="Target phrases")
     parser.add_argument("--scores", default=None, help="Save scores to")
-    parser.add_argument("model_path", help="Path to the model")
+    parser.add_argument("--model_path", help="Path to the model")
 
     # Options
     parser.add_argument("--print-probs", default=False, action="store_true",
@@ -101,7 +100,7 @@ def parse_args():
             help="Probability for a word to be replaced by a random word")
 
     # Additional arguments
-    parser.add_argument("changes",  nargs="?", help="Changes to state", default="")
+    parser.add_argument("--changes",  nargs="?", help="Changes to state", default="")
 
     return parser.parse_args()
 
@@ -193,7 +192,7 @@ def main():
                 compute_probs = enc_dec.create_probs_computer()
                 src_line = raw_input('Source sequence: ')
                 trgt_line = raw_input('Target sequence: ')
-                src_seq = parse_input(state, indx_word_src, src_line, raise_unk=not args.allow_unk, 
+                src_seq = parse_input(state, indx_word_src, src_line, raise_unk=not args.allow_unk,
                                       unk_sym=state['unk_sym_source'], null_sym=state['null_sym_source'])
                 trgt_seq = parse_input(state, indx_word_trgt, trgt_line, raise_unk=not args.allow_unk,
                                        unk_sym=state['unk_sym_target'], null_sym=state['null_sym_target'])
