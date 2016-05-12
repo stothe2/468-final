@@ -5,13 +5,12 @@ from nltk.tokenize import TweetTokenizer
 import nltk.tokenize.api
 import tinysegmenter
 
-class myTinySegmenter(tinysegmenter.TinySegmenter, nltk.tokenize.api.TokenizerI):
-    pass
-
-
 baseline_path = os.getcwd()[:-36]
 if baseline_path not in sys.path:
     sys.path.insert(0, baseline_path)
+
+class myTinySegmenter(tinysegmenter.TinySegmenter, nltk.tokenize.api.TokenizerI):
+    pass
 
 optparser = optparse.OptionParser()
 optparser.add_option("-d", "--data", dest="data", default=baseline_path+"en-jp-gold/bitext/parallel.gold.en-jp", help="Parallel corpus")

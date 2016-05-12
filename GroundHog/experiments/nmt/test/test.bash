@@ -21,28 +21,30 @@ function check_result() {
         STATUS="failed"
     else
         echo "OK"
-    fi        
+    fi
 }
 
 echo "Stage 0: Preparing the workspace"
 
 DIR='test_workspace'
-# Until we upload the models to a server the test data is 
+# Until we upload the models to a server the test data is
 # stored in LISA data storage, which means that running
 # tests is currently possible only from the LISA lab.
-DATAURL='file://localhost/data/lisatmp3/bahdanau/testdata'
+#DATAURL='file://localhost/data/lisatmp3/bahdanau/testdata'
+DATAURL='file://localhost/Users/etotheipiplusone/Documents/git/468-final/en-jp/data'
 
 if [ ! -d $DIR ]
-then    
+then
     echo "No test workspace found; creating a new one"
     mkdir $DIR
     cd $DIR
-    curl $DATAURL/data.tgz >data.tgz
-    tar xzf data.tgz
-else    
+    #curl $DATAURL/data.tgz >data.tgz
+    #tar xzf data.tgz
+    curl $DATAURL/trunc.s
+else
     cd $DIR
     rm log.txt
-fi    
+fi
 
 echo "Stage 1: Test scoring"
 
@@ -66,5 +68,5 @@ check_result $DIFF search_trans.txt "RNNsearch translation changed!"
 
 if [ $STATUS != "ok" ]
 then
-    echo "There are failed tests, check $DIR for the new outputs"    
-fi  
+    echo "There are failed tests, check $DIR for the new outputs"
+fi
