@@ -29,7 +29,6 @@ ja_tokenized = codecs.open("bitext.ja.tok.txt", "w", "utf-8")
 for pair in ref:
     en_tokenized.write(" ".join(tknzr.tokenize(pair[0])))
     en_tokenized.write("\n")
-    print("ref is " + pair[1])
     ja_tokenized.write(" ".join(segmenter.tokenize(pair[1].decode("utf-8"))))
     ja_tokenized.write("\n")
 
