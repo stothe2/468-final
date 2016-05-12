@@ -30,7 +30,5 @@ for pair in ref:
     en_tokenized.write(" ".join(tknzr.tokenize(pair[0])))
     en_tokenized.write("\n")
     ja_tokenized.write(" ".join(segmenter.tokenize(pair[1].decode("utf-8"))))
-    ja_tokenized.write("\n")
 
-en_tokenized.close()
 ja_tokenized.close()
