@@ -125,6 +125,10 @@ $ THEANO_FLAGS='floatX=float32' python train.py --proto=prototype_encdec_state "
 
 The output from this is in the main directory, called `output`.
 
+## Results
+
+See the `*.doc` files for the analysis.
+
 ## Resources
 
 ##### Neural-based MT
