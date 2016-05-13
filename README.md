@@ -127,7 +127,7 @@ The output from this is in the main directory, called `output`.
 
 ## Results
 
-See the `*.doc` files for the analysis.
+See the `Human_Eval_*` files for the analysis.
 
 ## Resources
 
