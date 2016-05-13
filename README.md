@@ -75,16 +75,55 @@ We use Stochastic Gradient Descent (SGD) algorithm to minimize the error loss.  
 
 Our dataset is the Japanese-English parallel corpus on [microtopia](http://www.cs.cmu.edu/~lingwang/microtopia/). We used 100% of the data for training because the corpus only had 953 sentence pairs.
 
-We found only 2831 unique words in the English text, and 1777 unique words in the Japanese word. This means our `vocabulary_size` size is limited to those numbers. Any word not in our vocabulary is mapped to `UNK`. For example, say "Johns" in an infrequent word in our training corpus. Then the sentence "Johns Hopkins University is in Baltimore" will be processed as "UNK Hopkins University is in Baltimore".
+We found only 2831 unique words in the English text, and 1777 unique words in the Japanese text. This means our `vocabulary_size` size is limited to those numbers. Any word not in our vocabulary is mapped to `UNK`. For example, say "Johns" in an infrequent word in our training corpus. Then the sentence "Johns Hopkins University is in Baltimore" will be processed as "UNK Hopkins University is in Baltimore".
 
 #### Code
 
 Our initial plan was to use [Theano](http://deeplearning.net/software/theano/) and [Blocks](http://blocks.readthedocs.org/en/latest/). However, compared to Theano, we found [Torch](http://torch.ch/) more user-friendly and easy-to-pick-up.
 
-We could only write an implementation of a BiRNN with Torch, and got confused with the usage of layers (we kind of got the gist of how it'd be implemented for a classifying task, or even for language model training, but the implementing it in as part of an encoder-decoder architecture for machine translation confused us). In the end, we decided to switch base and use Bahdanau's own version of the code. Note, however, their code makes use of GroundHog, which is now deprecated, and thus not ideal. But for our purposes, it works well.
+We could only write an implementation of a BiRNN with Torch, and got confused with the usage of layers (we kind of got the gist of how it'd be implemented for a classifying task, or even for language model training, but the implementing it in as part of an encoder-decoder architecture for machine translation confused us). In the end, we decided to switch base and use [original code](https://github.com/lisa-groundhog/GroundHog/tree/master/experiments/nmt) used in Bahdanau *et al.*. Note, however, their code makes use of GroundHog which is now deprecated and, thus, not ideal. But for our purposes, it works well.
+
+## File Structure
+
+The main files reside in the `GroundHog/experiment/nmt` directory. We make use of the following files:
+- `state.py` defines all parameters used by the model
+- `encdec.py` main model
+- `train.py` training code
+
+In addition, data processing files are in the `GroundHog/experiment/nmt/preprocess` directory. We used all the original scripts to process the data, and in addition wrote our own tokenizer `tokenize.py`.
+
+Our output from the training run is placed in the main directory, and called `output`.
 
 ## Usage
 
+#### Preprocessing
+
+`cd` into `GroundHog/experiment/nmt/preprocess` and start by tokenizing the parallel courpus.
+```
+$ python tokenizer.py
+```
+Then, run the following commands.
+```
+$ python preprocess.py bitext.en.tok.txt -d vocab.en.pkl -v 30000 -b binarized_text.en.pkl -p
+$ python invert-dict.py vocab.en.pkl ivocab.en.pkl
+$ python convert-pkl2hdf5.py binarized_text.en.pkl binarized_text.en.h5
+
+$ python preprocess.py bitext.ja.tok.txt -d vocab.ja.pkl -v 30000 -b binarized_text.ja.pkl -p
+$ python invert-dict.py vocab.ja.pkl ivocab.ja.pkl
+$ python convert-pkl2hdf5.py binarized_text.ja.pkl binarized_text.ja.h5
+
+$ python shuffle-hdf5.py binarized_text.en.h5 binarized_text.ja.h5 binarized_text.en.shuf.h5 binarized_text.ja.shuf.h5
+```
+
+Files `binarized_text.en.shuf.h5` and `binarized_text.ja.shuf.h5` are what we use as inputs to our model. However, due to some bug in the code, you might have to rename them in a single letter, and place it in the same directory as the scripts, that is `GroundHog/experiment/nmt`. We called renamed `binarized_text.en.shuf.h5` to `s` and `binarized_text.ja.shuf.h5` to `t`.
+
+#### Training
+
+```
+$ THEANO_FLAGS='floatX=float32' python train.py --proto=prototype_encdec_state "target='t', source='s', indx_word='preprocess/ivocab.en.pkl', indx_word_target='preprocess/ivocab.ja.pkl', word_indx='preprocess/vocab.en.pkl', word_indx_trgt='preprocess/vocab.ja.pkl', null_sym_source=2831, null_sym_target=1777, n_sym_source=2832, n_sym_target=1778, allow_input_downcast=True, timeStop=60"
+```
+
+The output from this is in the main directory, called `output`.
 
 ## Resources
 
