@@ -62,25 +62,29 @@ Its important to note that only the word embedding matrix *E* is shared between 
 
 The Gated Recursive Unit (GRU) was proposed by Cho *et al.* (2014). We won't desribe it in detail here, but see [this](http://colah.github.io/posts/2015-08-Understanding-LSTMs/) post by Christopher Olah to understand the reasoning behind them. (will post more on this later).
 
-## Experiment Settings
-
-#### Data
-
-Our dataset is the Japanese-English parallel corpus on [microtopia](http://www.cs.cmu.edu/~lingwang/microtopia/). We use 80% of the data for training, and the rest 20% for testing.
-
-We limit our `vocabulary_size` to 30,000, that is, we only use 30,000 most frequent words. Any word not in our vocabulary is mapped to `UNKOWN_TOKEN`. For example, say "Johns" in an infrequent word in our training corpus. Then the sentence "Johns Hopkins University is in Baltimore" will be processed as "UNKOWN_TOKEN Hopkins University is in Baltimore".
-
-#### Code
-
-We use [Theano](http://deeplearning.net/software/theano/) and [Blocks](http://blocks.readthedocs.org/en/latest/).
-
 ## Training: SGD and BPTT
 
 As by now you would know, neural networks start out "blank". That is to say, they make use of no pre-designed feature parameters. The weight matrices are [generally] randomly initialized. It is the goal of training to find matrices that give rise to most desirable behavior (loss function).
 
 We use Stochastic Gradient Descent (SGD) algorithm to minimize the error loss.  What it does is that it trains the pamareters of the neural network to move in a direction that minimizes error. This direction is given by the gradients on the loss.
 
-(more to come later).
+
+## Experiment Settings
+
+#### Data
+
+Our dataset is the Japanese-English parallel corpus on [microtopia](http://www.cs.cmu.edu/~lingwang/microtopia/). We used 100% of the data for training because the corpus only had 953 sentence pairs.
+
+We found only 2831 unique words in the English text, and 1777 unique words in the Japanese word. This means our `vocabulary_size` size is limited to those numbers. Any word not in our vocabulary is mapped to `UNK`. For example, say "Johns" in an infrequent word in our training corpus. Then the sentence "Johns Hopkins University is in Baltimore" will be processed as "UNK Hopkins University is in Baltimore".
+
+#### Code
+
+Our initial plan was to use [Theano](http://deeplearning.net/software/theano/) and [Blocks](http://blocks.readthedocs.org/en/latest/). However, compared to Theano, we found [Torch](http://torch.ch/) more user-friendly and easy-to-pick-up.
+
+We could only write an implementation of a BiRNN with Torch, and got confused with the usage of layers (we kind of got the gist of how it'd be implemented for a classifying task, or even for language model training, but the implementing it in as part of an encoder-decoder architecture for machine translation confused us). In the end, we decided to switch base and use Bahdanau's own version of the code. Note, however, their code makes use of GroundHog, which is now deprecated, and thus not ideal. But for our purposes, it works well.
+
+## Usage
+
 
 ## Resources
 
